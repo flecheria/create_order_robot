@@ -19,7 +19,7 @@ Library             RPA.FileSystem
 Orders robots from RobotSpareBin Industries Inc
     # Open website and overcome welcome message
     Open website
-    # Download CSV
+    Download CSV
     ${orders} =    Read CSV
     # Complete Order Form Test
     FOR    ${order}    IN    @{orders}
@@ -29,7 +29,6 @@ Orders robots from RobotSpareBin Industries Inc
         ${file_name} =    Capture preview of the robot    ${order}
         Confirm the order
         Test for order confirmation
-
         ${data} =    Get data for PDF
         Log To Console    ${data}
         ${fulltext} =    Create HTML for PDF    ${data}    ${order}
@@ -40,6 +39,7 @@ Orders robots from RobotSpareBin Industries Inc
 
     Create ZIP package from PDF files
     Remove directory    ${OUTPUTDIR}/pdf    recursive=${True}
+    Remove directory    ${OUTPUTDIR}/img    recursive=${True}
     [Teardown]    Close Browser
 
 
@@ -95,7 +95,7 @@ Capture preview of the robot
     Wait Until Element Is Visible    id:robot-preview-image
     ${test} =    Catenate    ${order}[Order number]    .png
     ${file_name} =    Catenate    robot_preview_    ${test}
-    Capture Element Screenshot    id:robot-preview-image    ${OUTPUTDIR}/${file_name}
+    Capture Element Screenshot    id:robot-preview-image    ${OUTPUTDIR}/img/${file_name}
     RETURN    ${file_name}
 
 Confirm the order
@@ -121,7 +121,7 @@ Get data for PDF
 Create HTML for PDF
     [Documentation]    Create PDF with text
     [Arguments]    ${text}    ${order}
-    ${img_path} =    Catenate    ${OUTPUTDIR}/robot_preview_    ${order}[Order number]
+    ${img_path} =    Catenate    ${OUTPUTDIR}/img/robot_preview_    ${order}[Order number]
     ${img_path} =    Catenate    ${img_path}    .png
     RETURN    ${{ "<div><p>{0}</p><img src=\"{1}\"</div>".format($text, $img_path) }}
 
