@@ -1,3 +1,6 @@
+# avoid to read text excel file
+*.csv
+
 output/
 venv/
 temp/
