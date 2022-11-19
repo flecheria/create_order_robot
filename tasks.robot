@@ -13,14 +13,18 @@ Library             RPA.Robocloud.Items
 Library             RPA.PDF
 Library             RPA.Archive
 Library             RPA.FileSystem
+Library             RPA.Dialogs
 
 
 *** Tasks ***
 Orders robots from RobotSpareBin Industries Inc
     # Open website and overcome welcome message
     Open website
-    Download CSV
-    ${orders} =    Read CSV
+    # get data with download
+    # Download CSV
+    # ${orders} =    Read CSV
+    # get data with Assistant Dialog
+    ${orders} =    Collect Data From User
     # Complete Order Form Test
     FOR    ${order}    IN    @{orders}
         Test for Alert
@@ -155,3 +159,13 @@ Test for order confirmation
 
 Create ZIP package from PDF files
     Archive Folder With Zip    ${OUTPUT_DIR}/pdf    ${OUTPUT_DIR}/PDFs.zip
+
+Collect Data From User
+    Add heading    Upload CSV with data
+    Add file input
+    ...    label=Upload the CSV file with orders data
+    ...    name=fileupload
+    ...    file_type=CSV files (*.csv)
+    ...    destination=${OUTPUT_DIR}
+    ${response} =    Run dialog
+    RETURN    ${response.fileupload}[0]
