@@ -14,17 +14,21 @@ Library             RPA.PDF
 Library             RPA.Archive
 Library             RPA.FileSystem
 Library             RPA.Dialogs
+Library             RPA.Robocloud.Secrets
 
 
 *** Tasks ***
 Orders robots from RobotSpareBin Industries Inc
+    # get secrets from vault
+    ${secrets} =    Get Secret    url
     # Open website and overcome welcome message
     Open website
     # get data with download
-    # Download CSV
-    # ${orders} =    Read CSV
+    Download CSV With Url    ${secrets}
+    ${orders} =    Read CSV
     # get data with Assistant Dialog
-    ${orders} =    Collect Data From User
+    # ${file} =    Collect Data From User
+    # ${orders} =    Read CSV From File    ${file}
     # Complete Order Form Test
     FOR    ${order}    IN    @{orders}
         Test for Alert
@@ -61,11 +65,23 @@ Overcome welcome message
     Click Button    class:btn.btn-dark
 
 Download CSV
+    [Documentation]    Download data for orders
     Download    https://robotsparebinindustries.com/orders.csv    overwrite=True
+
+Download CSV With Url
+    [Documentation]    Download data for orders
+    [Arguments]    ${url}
+    Download    ${url}    overwrite=True
 
 Read CSV
     [Documentation]    Read and return csv as a table
     ${orders} =    Read table from CSV    orders.csv    header=TRUE
+    RETURN    ${orders}
+
+Read CSV From File
+    [Documentation]    Read and return csv as a table
+    [Arguments]    ${file}
+    ${orders} =    Read table from CSV    ${file}    header=TRUE
     RETURN    ${orders}
 
 Complete Order Form Test
