@@ -1,3 +1,5 @@
 {
-    "url": "https://robotsparebinindustries.com/orders.csv"
+    "orders_url": {
+        "url": "https://robotsparebinindustries.com/orders.csv"
+    }
 }

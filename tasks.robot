@@ -14,18 +14,20 @@ Library             RPA.PDF
 Library             RPA.Archive
 Library             RPA.FileSystem
 Library             RPA.Dialogs
-Library             RPA.Robocloud.Secrets
+# Library    RPA.Robocloud.Secrets
+Library             RPA.Robocorp.Vault
 
 
 *** Tasks ***
 Orders robots from RobotSpareBin Industries Inc
     # get secrets from vault
-    ${secrets} =    Get Secret    url
-    Log To Console    ${secrets}
+    Log To Console    "Start with valut"
+    ${secrets} =    Get Secret    orders_url
+    Log To Console    ${secrets}[url]
     # Open website and overcome welcome message
     Open website
     # get data with download
-    Download CSV With Url    ${secrets}
+    Download CSV With Url    ${secrets}[url]
     ${orders} =    Read CSV
     # get data with Assistant Dialog
     # ${file} =    Collect Data From User
