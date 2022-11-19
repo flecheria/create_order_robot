@@ -21,6 +21,7 @@ Library             RPA.Robocloud.Secrets
 Orders robots from RobotSpareBin Industries Inc
     # get secrets from vault
     ${secrets} =    Get Secret    url
+    Log To Console    ${secrets}
     # Open website and overcome welcome message
     Open website
     # get data with download
